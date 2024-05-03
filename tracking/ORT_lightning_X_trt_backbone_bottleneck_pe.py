@@ -1,4 +1,7 @@
 import argparse
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).absolute().parents[1] / 'lib'))
 import torch
 import _init_paths
 from lib.models.stark.repvgg import repvgg_model_convert
@@ -19,6 +22,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Parse args for training')
     parser.add_argument('--script', type=str, default='stark_lightning_X_trt', help='script name')
     parser.add_argument('--config', type=str, default='baseline_rephead_4_lite_search5', help='yaml configure file name')
+    parser.add_argument('--epoch', type=int, default=500)
     args = parser.parse_args()
     return args
 
@@ -67,8 +71,8 @@ if __name__ == "__main__":
     if load_checkpoint:
         save_dir = env_settings().save_dir
         checkpoint_name = os.path.join(save_dir,
-                                       "checkpoints/train/%s/%s/STARKLightningXtrt_ep0500.pth.tar"
-                                       % (args.script, args.config))
+                                       "checkpoints/train/%s/%s/STARKLightningXtrt_ep%s.pth.tar"
+                                       % (args.script, args.config, str(args.epoch).zfill(4)))
         model.load_state_dict(torch.load(checkpoint_name, map_location='cpu')['net'], strict=True)
     # transfer to test mode
     model = repvgg_model_convert(model)
