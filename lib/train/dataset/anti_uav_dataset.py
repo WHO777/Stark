@@ -13,7 +13,7 @@ class AntiUAVDataset(BaseVideoDataset):
         assert split in ["train", "validation"]
         root = Path(root) / split
         super(AntiUAVDataset, self).__init__("Anti-UAV", root, image_loader)
-        self.sequence_list = [s.name for s in root.iterdir()]
+        self.sequence_list = [s.name for s in root.iterdir() if s.is_dir()]
         self.seq_per_class = {"drone": self.sequence_list}
         self.class_list = ["drone"]
 
