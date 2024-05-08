@@ -36,7 +36,7 @@ def main():
                        args.distill, args.script_teacher, args.config_teacher)
         print(train_cmd)
     elif args.mode == "multiple":
-        train_cmd = "pdm run python3 -m torch.distributed.launch --nproc_per_node %d lib/train/run_training.py " \
+        train_cmd = "pdm run python3 -m torch.distributed.run --nproc_per_node %d lib/train/run_training.py " \
                     "--script %s --config %s --save_dir %s --use_lmdb %d --script_prv %s --config_prv %s  " \
                     "--distill %d --script_teacher %s --config_teacher %s" \
                     % (args.nproc_per_node, args.script, args.config, args.save_dir, args.use_lmdb, args.script_prv,
